@@ -28,13 +28,14 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Verify (fork-safe, no token)
+      - name: Set up Buf
+        uses: bufbuild/buf-setup-action@v1
+        
+      - name: Verify (fork-safe, build only)
         if: github.repository != 'agntcy/dir'
-        uses: bufbuild/buf-action@8f4a1456a0ab6a1eb80ba68e53832e6fcfacc16c # v1.3.0
-        with:
-          input: proto/
-          format: false
-          lint: false
+        run: |
+          buf --version
+          buf build proto/
 
       - name: Verify (upstream, with token)
         if: github.repository == 'agntcy/dir'
